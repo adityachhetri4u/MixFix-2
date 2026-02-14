@@ -1,0 +1,6 @@
+.vscode/settings.json
+.vscode/launch.json
+dist/
+node_modules/
+*.local
+.DS_Store

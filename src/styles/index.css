@@ -1,0 +1,202 @@
+:root {
+  /* Dark Vintage Radio Palette */
+  --bakelite-black: #1C1A18;
+  --charcoal-panel: #2A2622;
+  --graphite-inner: #34302B;
+  --raised-surface: #3E3A35;
+  --soft-grey: #5B554E;
+  
+  --brass: #C28A3A;
+  --gold-highlight: #E5B763;
+  --aged-copper: #8C5A24;
+  
+  --text-main: #E7D7B5;
+  --text-secondary: #B7A98D;
+  
+  --light-on: #FF9E2C;
+  --light-off: #6E655B;
+  --glow: rgba(255, 158, 44, 0.6);
+
+  color: var(--text-main);
+  background-color: var(--bakelite-black);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Montserrat Alternates", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(800px 500px at 20% 10%, rgba(194, 138, 58, 0.12), transparent 60%),
+    radial-gradient(600px 400px at 80% 90%, rgba(140, 90, 36, 0.08), transparent 55%),
+    linear-gradient(135deg, var(--bakelite-black) 0%, #151210 50%, #0E0C0A 100%);
+  color: var(--text-main);
+}
+
+a {
+  font-weight: 600;
+  color: var(--brass);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--gold-highlight);
+}
+
+button {
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  padding: 0.7em 1.4em;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Montserrat Alternates", sans-serif;
+  letter-spacing: 0.06em;
+  background: linear-gradient(to bottom, #3B3631, #26221F);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 
+    inset 0 4px 10px rgba(0, 0, 0, 0.7),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.03);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--light-on);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   VINTAGE RADIO TYPOGRAPHY SYSTEM
+   ============================================ */
+
+/* 1. MAIN TITLE - Engraved Metal Plate */
+.main-title {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #E7D7B5;
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.08),
+    0 2px 0 rgba(0, 0, 0, 0.9),
+    0 4px 6px rgba(0, 0, 0, 0.7),
+    0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 2. SUB TEXT - Faded Printed Panel Text */
+.sub-text {
+  font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: rgba(183, 169, 141, 0.85);
+  letter-spacing: 0.04em;
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* 3. KNOB LABELS - Printed Technical Panel Labels */
+.knob-label {
+  font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #9B8C75;
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    0 -1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* 4. CONTROL BUTTON TEXT - Stamped Bakelite Buttons */
+.control-btn-text {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #BDB09A;
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 3px rgba(0, 0, 0, 0.8);
+}
+
+.control-btn-text:active {
+  text-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* 5. SIGNAL TEXT - Glowing Vacuum Tube Display */
+.signal-text {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #FF9E2C;
+  text-shadow: 
+    0 0 8px rgba(255, 158, 44, 0.8),
+    0 0 12px rgba(255, 158, 44, 0.5),
+    0 0 16px rgba(255, 158, 44, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* 6. LOAD TEXT - Glowing Glass Panel Text */
+.load-text {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #E5B763;
+  text-shadow: 
+    0 0 15px rgba(194, 138, 58, 0.7),
+    0 0 20px rgba(194, 138, 58, 0.5),
+    0 0 25px rgba(194, 138, 58, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 7. ANALYZE BUTTON TEXT - Prominent Brass Action */
+.analyze-btn-text {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #1C1A18;
+  text-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.2),
+    0 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   END TYPOGRAPHY SYSTEM
+   ============================================ */
