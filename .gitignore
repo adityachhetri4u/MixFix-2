@@ -2,5 +2,9 @@
 .vscode/launch.json
 dist/
 node_modules/
+venv/
 *.local
 .DS_Store
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js

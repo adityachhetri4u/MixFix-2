@@ -1,0 +1,20 @@
+.home-background {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 1.2rem 0 1.6rem;
+  background-image:
+    linear-gradient(
+      rgba(10, 10, 10, 0.88),
+      rgba(10, 10, 10, 0.88)
+    ),
+    url("../assets/home-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.home-main {
+  width: 100%;
+}

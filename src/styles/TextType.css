@@ -1,0 +1,44 @@
+/* ── TextType component styles ── */
+
+.text-type {
+  display: inline-block;
+  white-space: pre-wrap;
+}
+
+/* Blinking cursor */
+.text-type__cursor {
+  margin-left: 0.1em;
+  display: inline-block;
+  opacity: 1;
+  animation: ttCursorBlink 0.75s step-start infinite;
+}
+
+@keyframes ttCursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.text-type__cursor--hidden {
+  display: none;
+}
+
+/* ── Utility: subtle blink for static text that finished typing ── */
+.tt-static-blink {
+  animation: ttStaticBlink 3s ease-in-out infinite;
+}
+
+@keyframes ttStaticBlink {
+  0%, 80%, 100% { opacity: 1; }
+  88%           { opacity: 0.35; }
+}
+
+/* ── Utility: fade-reveal for lines shown after typing completes ── */
+.tt-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tt-revealed {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}

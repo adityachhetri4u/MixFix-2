@@ -1,0 +1,7 @@
+flask>=3.0
+flask-cors>=4.0
+librosa>=0.10
+numpy>=1.26
+soundfile>=0.12
+# MP3 support (one of the following, pip will pick the right wheel)
+audioread>=3.0

@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import './styles/App.css'
-import FileUpload from './components/FileUpload'
-import AnalysisResults from './components/AnalysisResults'
-import Dashboard from './components/Dashboard'
+import LandingPage from './components/LandingPage'
+import HomePage from './components/HomePage'
+import HistoryPage from './components/HistoryPage'
+import UserPage from './components/UserPage'
+import AnalysisPage from './components/AnalysisPage'
+import Sidebar from './components/Sidebar'
 
 interface AnalysisData {
   fileName: string
@@ -16,11 +20,34 @@ interface AnalysisData {
   waveformData?: number[]
 }
 
-function App() {
+export interface AudioInfo {
+  sampleRate: number
+  duration: number
+  channels: number
+  tempo: number
+  rms: number
+  spectralCentroid: number
+  zeroCrossingRate: number
+  dynamicRange: number
+  waveformData: number[]
+  format: string
+  rating: number
+  issues: Array<{
+    type: string
+    severity: 'low' | 'medium' | 'high'
+    description: string
+    timestamp: number
+  }>
+}
+
+function AppContent() {
+  const navigate = useNavigate()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [loadedFile, setLoadedFile] = useState<File | null>(null)
+  const [audioInfo, setAudioInfo] = useState<AudioInfo | null>(null)
 
   useEffect(() => {
     return () => {
@@ -31,108 +58,95 @@ function App() {
   }, [audioUrl])
 
   const handleFileUpload = (file: File) => {
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl)
-    }
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
     setAudioUrl(URL.createObjectURL(file))
     setLoadedFile(file)
+    setAudioInfo(null)
+
+    // Send to Python backend for real librosa analysis
+    const form = new FormData()
+    form.append('file', file)
+    fetch('/api/analyze', { method: 'POST', body: form })
+      .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
+      .then((data: AudioInfo) => setAudioInfo(data))
+      .catch(err => console.warn('Backend not running — using mock data.', err))
   }
 
   const handleStartAnalysis = () => {
     if (!loadedFile) return
-    
     setIsAnalyzing(true)
+    navigate('/analysis')          // go immediately — show scan screen there
 
-    // Simulate analysis - will be replaced with actual ML model call
+    const capturedInfo = audioInfo
     setTimeout(() => {
-      const mockAnalysis: AnalysisData = {
+      const analysis: AnalysisData = {
         fileName: loadedFile.name,
-        rating: Math.floor(Math.random() * 40) + 60, // 60-100
-        issues: [
-          {
-            type: 'Clipping',
-            severity: 'high',
-            description: 'Audio clipping detected at 45% of track duration',
-            timestamp: 2.5,
-          },
-          {
-            type: 'Noise Floor',
-            severity: 'medium',
-            description: 'Background noise detected',
-            timestamp: 0.8,
-          },
-          {
-            type: 'Dynamic Range',
-            severity: 'low',
-            description: 'Limited dynamic range could reduce impact',
-            timestamp: 1.2,
-          },
+        rating: capturedInfo?.rating ?? (Math.floor(Math.random() * 40) + 60),
+        issues: capturedInfo?.issues as AnalysisData['issues'] ?? [
+          { type: 'Clipping', severity: 'high', description: 'Audio clipping detected at 45% of track duration', timestamp: 2.5 },
+          { type: 'Noise Floor', severity: 'medium', description: 'Background noise detected', timestamp: 0.8 },
+          { type: 'Dynamic Range', severity: 'low', description: 'Limited dynamic range could reduce impact', timestamp: 1.2 },
         ],
-        waveformData: Array.from({ length: 100 }, () => Math.random()),
+        waveformData: capturedInfo?.waveformData ?? Array.from({ length: 100 }, () => Math.random()),
       }
-      setAnalysisData(mockAnalysis)
+      setAnalysisData(analysis)
       setIsAnalyzing(false)
-    }, 2000)
+    }, 6000)
   }
 
   const handleNewAnalysis = () => {
     setAnalysisData(null)
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl)
-    }
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
     setAudioUrl(null)
     setLoadedFile(null)
+    setAudioInfo(null)
   }
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>MixFix Radio Lab</h1>
-        <p>AI Audio Diagnostics for Music Producers</p>
-        <nav className="app-menu">
-          <button type="button" className="menu-btn">Home</button>
-          <button type="button" className="menu-btn">History</button>
-          <button type="button" className="menu-btn">User</button>
-        </nav>
-        <div className="header-dial">
-          <div className="dial-window">FM 98.4</div>
-          <div className="dial-track"></div>
-          <div className="dial-needle"></div>
-        </div>
-        <div className="dial-scale">
-          <span className="dial-label">88</span>
-          <span className="dial-label">92</span>
-          <span className="dial-label">96</span>
-          <span className="dial-label">100</span>
-          <span className="dial-label">104</span>
-        </div>
-        <div className="radio-strip">
-          <span className="radio-pill">FM 98.4</span>
-          <span className="radio-pill">AM 720</span>
-          <span className="radio-pill">STEREO</span>
-          <span className="radio-led">ON AIR</span>
-        </div>
+        <button className="nav-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <h1 className="app-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>MixFix</h1>
+        <button className="profile-btn" onClick={() => navigate('/user')} aria-label="User profile">
+          👤
+        </button>
       </header>
 
-      <main className="app-main">
-        {!analysisData ? (
-          <FileUpload
-            onFileUpload={handleFileUpload}
-            onStartAnalysis={handleStartAnalysis}
-            isAnalyzing={isAnalyzing}
-            audioUrl={audioUrl}
-            hasLoadedFile={!!loadedFile}
-          />
-        ) : (
-          <>
-            <AnalysisResults data={analysisData} />
-            <Dashboard data={analysisData} />
-            <button className="btn-new-analysis" onClick={handleNewAnalysis}>
-              Analyze Another File
-            </button>
-          </>
-        )}
-      </main>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <Routes>
+        <Route
+          path="/app"
+          element={
+            <HomePage
+              isAnalyzing={isAnalyzing}
+              audioUrl={audioUrl}
+              hasLoadedFile={!!loadedFile}
+              onFileUpload={handleFileUpload}
+              onStartAnalysis={handleStartAnalysis}
+              fileName={loadedFile?.name}
+              audioInfo={audioInfo}
+            />
+          }
+        />
+        <Route path="/history" element={<HistoryPage />} />
+        <Route
+          path="/analysis"
+          element={
+            <AnalysisPage
+              data={analysisData}
+              isAnalyzing={isAnalyzing}
+              fileName={loadedFile?.name}
+              onNewAnalysis={handleNewAnalysis}
+            />
+          }
+        />
+        <Route path="/user" element={<UserPage />} />
+      </Routes>
 
       <footer className="app-footer">
         <div className="footer-inner">
@@ -146,6 +160,17 @@ function App() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/*" element={<AppContent />} />
+      </Routes>
+    </Router>
   )
 }
 

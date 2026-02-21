@@ -188,8 +188,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, onStartAnalysis, 
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={() => setIsPlaying(false)}
         />
-        <h2 className="main-title">{hasLoadedFile ? 'Tape ready for analysis' : 'Drop your audio tape here'}</h2>
-        <p className="sub-text">{hasLoadedFile ? 'Press Analyze to scan the tape' : 'or push the knob to load'}</p>
         <input
           type="file"
           accept="audio/*"

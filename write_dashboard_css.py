@@ -1,4 +1,6 @@
-/* Dashboard.css — MixFix v6 — Industrial CRT Hardware Console */
+import pathlib
+
+css = r"""/* Dashboard.css — MixFix v6 — Industrial CRT Hardware Console */
 
 /* ═════════════════════════════════════════════════════════════
    HARDWARE BODY
@@ -200,14 +202,13 @@
 
 /* ── Waveform area ── */
 .crt-waveform-area {
+  flex: 1;
   position: relative;
   display: flex;
   align-items: flex-end;
-  gap: 3px;
-  padding: 0 4px;
-  height: 140px;
-  flex-shrink: 0;
-  overflow: hidden;
+  gap: 2px;
+  padding: 0 2px;
+  min-height: 100px;
 }
 
 /* Horizontal grid lines */
@@ -238,40 +239,31 @@
 
 .crt-wave-bar {
   flex: 1;
-  background: rgba(0,245,160,0.65);
+  background: rgba(0,245,160,0.55);
   border-radius: 2px 2px 0 0;
-  min-width: 4px;
-  max-width: 24px;
+  min-width: 3px;
   align-self: flex-end;
-  transform-origin: bottom center;
-  transition: height 0.2s ease-in-out, background 0.15s ease;
+  transform-origin: bottom;
+  transition: height 0.18s ease-in-out;
+  position: relative;
 }
 
 .crt-wave-bar.peak {
   background: #00F5A0;
-  box-shadow: 0 0 8px rgba(0,245,160,0.7), 0 -3px 10px rgba(0,245,160,0.35);
-}
-
-/* Bars ahead of playhead go dim while playing */
-.crt-wave-bar.dim {
-  background: rgba(0,245,160,0.22);
-}
-
-.crt-wave-bar.dim.peak {
-  background: rgba(0,245,160,0.35);
-  box-shadow: none;
+  box-shadow: 0 0 6px rgba(0,245,160,0.6), 0 -2px 8px rgba(0,245,160,0.3);
 }
 
 .crt-wave-bar.animate {
   animation: crtBarPulse 0.5s ease-in-out infinite alternate;
 }
 
+/* stagger the animation so bars don't move together */
 .crt-wave-bar.animate:nth-child(odd)  { animation-duration: 0.42s; }
 .crt-wave-bar.animate:nth-child(3n)   { animation-duration: 0.55s; }
 .crt-wave-bar.animate:nth-child(4n)   { animation-duration: 0.38s; }
 
 @keyframes crtBarPulse {
-  from { transform: scaleY(0.72); }
+  from { transform: scaleY(0.55); }
   to   { transform: scaleY(1.05); }
 }
 
@@ -856,3 +848,8 @@
     min-height: 180px;
   }
 }
+"""
+
+pathlib.Path(r'c:\Users\acer\MixFix\src\styles\Dashboard.css').write_text(css, encoding='utf-8')
+size = pathlib.Path(r'c:\Users\acer\MixFix\src\styles\Dashboard.css').stat().st_size
+print(f"Dashboard.css written: {size} bytes")
